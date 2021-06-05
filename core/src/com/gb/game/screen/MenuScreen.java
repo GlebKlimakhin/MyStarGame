@@ -13,36 +13,34 @@ public class MenuScreen extends BaseScreen {
     private Texture ship;
     private Vector2 position;
     private Vector2 touch;
-    private Vector2 speed;
     private Vector2 temp;
+    private float shipSpeed = 10.4f;
 
 
     @Override
     public void show() {
         super.show();
-        img = new Texture("background_space.png");
-        ship = new Texture("ship.png");
+        ship = new Texture("Redsquare.png");
         position = new Vector2(1, 1);
         touch = new Vector2();
-        speed = new Vector2();
+        v = new Vector2();
         temp = new Vector2();
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
-        ScreenUtils.clear(0, 0, 0, 0);
+        ScreenUtils.clear(0.4f, 0, 0.91f, 0);
         batch.begin();
-        batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(ship, position.x, position.y, 128, 128);
+        batch.draw(ship, position.x, position.y, 1f, 1f);
         batch.end();
         temp.set(touch);
-        if(temp.sub(position).len() <= speed.len()){
+        if(temp.sub(position).len() <= v.len()){
             position.set(touch);
-            speed.setZero();
+            v.setZero();
         }
         else {
-            position.add(speed);
+            position.add(v);
         }
     }
 
@@ -56,7 +54,7 @@ public class MenuScreen extends BaseScreen {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touch.set(screenX, Gdx.graphics.getHeight() - screenY);
-        speed.set(touch.cpy().sub(position).setLength(1.0f));
+        v.set(touch.cpy().sub(position).setLength(shipSpeed));
         return false;
     }
 }
